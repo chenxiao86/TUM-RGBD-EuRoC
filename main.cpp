@@ -14,22 +14,23 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    argc = 2;
-    char pathName[10000] =
-            "/mnt/0E0616A706169037/work/DataSet/TUM/rgbd_dataset_freiburg3_long_office_household";
-    argv[1] = pathName;
+//    argc = 2;
+//    char pathName[10000] =
+//            "/mnt/0E0616A706169037/work/DataSet/TUM/rgbd_dataset_freiburg3_long_office_household";
+//    argv[1] = pathName;
 
-    if(argc != 2)
+    if(argc != 3)
     {
         cout << "error: Please enter a path name!" << endl;
         return -1;
     }
-    if( opendir(argv[1]) == NULL )
+    if( opendir(argv[2]) == NULL )
     {
         cout << "error: Please check the path" << endl;
     }
+    string ds(argv[1]);
 
-    string path(argv[1]);
+    string path(argv[2]);
     if( path[path.size()-1] != '/' ) path.push_back('/');
 
     if( opendir((path+"imu0").c_str()) == NULL )
@@ -109,11 +110,21 @@ int main(int argc, char** argv)
         for(int i = 0; i<fileNameT.size(); i++ )
         {
             string &fnO = fileNameT[i];
-            double fn = atof(fnO.substr(0,fnO.size()-4).c_str())*1e9;
-            char ss[1000];
-            sprintf(ss,"%.0f", fn);
-            string fnN(ss);
-            fnN += ".png";
+            string fnN;
+            if(ds == "TUM")
+            {
+                fnN = fnO.substr(0,10) + fnO.substr(11,6) + "000.png";
+            }
+            else if(ds == "Eu")
+            {
+                fnN = fnO.substr(0,10) + fnO.substr(11,9) + ".png";
+            }
+
+//            double fn = atof(fnO.substr(0,fnO.size()-4).c_str())*1e9;
+//            char ss[1000];
+//            sprintf(ss,"%.0f", fn);
+//            string fnN(ss);
+//            fnN += ".png";
 
             rename((pathRGB + fnO).c_str(), (pathRGB + "data/" + fnN).c_str());
         }
@@ -124,11 +135,21 @@ int main(int argc, char** argv)
         for(int i = 0; i<fileNameE.size(); i++ )
         {
             string &fnO = fileNameE[i];
-            double fn = atof(fnO.substr(0,fnO.size()-4).c_str())/1e9;
-            char ss[1000];
-            sprintf(ss,"%.6f", fn);
-            string fnN(ss);
-            fnN += ".png";
+            string fnN;
+            if(ds == "TUM")
+            {
+                fnN = fnO.substr(0,10) + "." + fnO.substr(10,6) + ".png";
+            }
+            else if(ds == "Eu")
+            {
+                fnN = fnO.substr(0,10) + "." + fnO.substr(10,9) + ".png";
+            }
+
+//            double fn = atof(fnO.substr(0,fnO.size()-4).c_str())/1e9;
+//            char ss[1000];
+//            sprintf(ss,"%.6f", fn);
+//            string fnN(ss);
+//            fnN += ".png";
 
             rename((pathCAMdata + fnO).c_str(), (pathCAM + fnN).c_str());
         }

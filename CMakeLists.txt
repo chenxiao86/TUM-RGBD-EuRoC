@@ -12,6 +12,6 @@ SET( CMAKE_BUILD_TYPE Debug  )
 #SET( CMAKE_BUILD_TYPE release  )
 
 
-ADD_EXECUTABLE(main main.cpp)
-TARGET_LINK_LIBRARIES( main
+ADD_EXECUTABLE(Conversion_between_TUM-RGBD_and_EuRoC main.cpp)
+TARGET_LINK_LIBRARIES( Conversion_between_TUM-RGBD_and_EuRoC
     )
